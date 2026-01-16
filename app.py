@@ -10,7 +10,7 @@ DOWNLOAD_FOLDER = "downloaded_images"
 
 def background_job(url):
     try:
-        crawl_and_download(url, folder=DOWNLOAD_FOLDER, depth=2)
+        crawl_and_download(url)
         zip_images(folder=DOWNLOAD_FOLDER)
     except Exception as e:
         print("Background error:", e)
