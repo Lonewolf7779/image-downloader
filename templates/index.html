@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Image Downloader</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Website Image Downloader</h2>
+
+        <form method="POST">
+            <input type="text" name="url" placeholder="Enter website URL" required>
+            <button type="submit">Download Images</button>
+        </form>
+
+        {% if message %}
+        <p class="message">{{ message }}</p>
+        {% endif %}
+
+        {% if show_download %}
+        <a href="/download">
+            <button style="margin-top:15px;">Download ZIP</button>
+        </a>
+        {% endif %}
+    </div>
+</body>
+
+</html>
