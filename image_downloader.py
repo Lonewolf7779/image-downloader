@@ -72,7 +72,7 @@ def crawl_and_download(start_url, max_pages=10):
 def zip_images():
     ensure_dirs()
 
-    with zipfile.ZipFile(ZIP_PATH, "w", zipfile.ZIP_DEFLATED) as zipf:
+    with zipfile.ZipFile(ZIP_PATH, "w", zipfile.ZIP_STORED) as zipf:
         for file in os.listdir(DOWNLOAD_DIR):
             if file == "images.zip":
                 continue

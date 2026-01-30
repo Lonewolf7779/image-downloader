@@ -10,8 +10,8 @@ DOWNLOAD_FOLDER = "downloaded_images"
 
 def background_job(url):
     try:
-        crawl_and_download(url)
-        zip_images(folder=DOWNLOAD_FOLDER)
+        crawl_and_download(url, max_pages=20)
+        zip_images()
     except Exception as e:
         print("Background error:", e)
 
@@ -39,3 +39,6 @@ def download():
     if os.path.exists(ZIP_PATH):
         return send_file(ZIP_PATH, as_attachment=True)
     return "ZIP not ready yet. Refresh after 30 seconds."
+
+if __name__ == "__main__":
+    app.run(debug=True)
