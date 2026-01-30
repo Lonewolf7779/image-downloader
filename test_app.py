@@ -5,9 +5,12 @@ from image_downloader import crawl_and_download, zip_images
 DOWNLOAD_DIR = "downloaded_images"
 ZIP_PATH = os.path.join(DOWNLOAD_DIR, "images.zip")
 
-def test_crawl_and_zip():
-    # Test with a public website that has images
-    test_url = "https://www.python.org/"  # Public site with images
+def test_crawl_and_zip(test_url=None):
+    if not test_url:
+        test_url = input("Enter the URL to test: ").strip()
+        if not test_url:
+            print("No URL provided. Exiting.")
+            return
 
     print("Starting crawl and download...")
     start = time.time()
