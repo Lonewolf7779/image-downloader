@@ -12,6 +12,15 @@ def test_crawl_and_zip(test_url=None):
             print("No URL provided. Exiting.")
             return
 
+    if not test_url.startswith(('http://', 'https://')):
+        test_url = 'https://' + test_url
+
+    # Clear previous downloads
+    for file in os.listdir(DOWNLOAD_DIR):
+        file_path = os.path.join(DOWNLOAD_DIR, file)
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+
     print("Starting crawl and download...")
     start = time.time()
     crawl_and_download(test_url, max_pages=2)  # Limit pages for test
