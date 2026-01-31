@@ -4,6 +4,9 @@ import zipfile
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
 import hashlib
+import threading
+
+# ================= CONFIG =================
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DOWNLOAD_DIR = os.path.join(BASE_DIR, "downloaded_images")
@@ -17,8 +20,24 @@ HEADERS = {
 }
 
 ALLOWED_EXTENSIONS = (
-    ".jpg", ".jpeg", ".png", ".webp", ".gif", ".bmp", ".tiff", ".svg"
+    ".jpg", ".jpeg", ".png", ".webp", ".gif",
+    ".bmp", ".tiff", ".svg"
 )
+
+# ================= STOP FLAG =================
+
+_stop_event = threading.Event()
+
+def stop_now():
+    _stop_event.set()
+
+def reset_stop_flag():
+    _stop_event.clear()
+
+def should_stop():
+    return _stop_event.is_set()
+
+# ================= HELPERS =================
 
 def ensure_dirs():
     os.makedirs(DOWNLOAD_DIR, exist_ok=True)
@@ -28,13 +47,11 @@ def is_image(url):
     return path.endswith(ALLOWED_EXTENSIONS)
 
 def get_best_image_src(img, base_url):
-    # Priority: data-original > data-src > srcset > src
     for attr in ["data-original", "data-src", "data-lazy", "data-img"]:
         if img.get(attr):
             return urljoin(base_url, img.get(attr))
 
     if img.get("srcset"):
-        # pick highest resolution from srcset
         srcset = img.get("srcset").split(",")
         return urljoin(base_url, srcset[-1].strip().split(" ")[0])
 
@@ -43,8 +60,11 @@ def get_best_image_src(img, base_url):
 
     return None
 
+# ================= MAIN LOGIC =================
+
 def crawl_and_download(start_url, max_pages=10):
     ensure_dirs()
+    reset_stop_flag()
 
     visited_pages = set()
     visited_images = set()
@@ -52,6 +72,10 @@ def crawl_and_download(start_url, max_pages=10):
     img_count = 0
 
     while to_visit and len(visited_pages) < max_pages and img_count < MAX_IMAGES:
+        if should_stop():
+            print("🛑 Download stopped by user")
+            return
+
         url = to_visit.pop(0)
         if url in visited_pages:
             continue
@@ -63,13 +87,13 @@ def crawl_and_download(start_url, max_pages=10):
             res.raise_for_status()
             soup = BeautifulSoup(res.text, "html.parser")
         except Exception as e:
-            print(f"Page failed: {url} -> {e}")
+            print(f"Page failed: {url}")
             continue
 
-        # 🔹 IMAGE SCRAPING
+        # ===== IMAGES =====
         for img in soup.find_all("img"):
-            if img_count >= MAX_IMAGES:
-                break
+            if should_stop() or img_count >= MAX_IMAGES:
+                return
 
             img_url = get_best_image_src(img, url)
             if not img_url or not is_image(img_url):
@@ -90,10 +114,10 @@ def crawl_and_download(start_url, max_pages=10):
                     f.write(img_data)
 
                 img_count += 1
-            except Exception as e:
-                print(f"Image failed: {img_url}")
+            except:
+                continue
 
-        # 🔹 INTERNAL LINKS
+        # ===== INTERNAL LINKS =====
         for a in soup.find_all("a", href=True):
             link = urljoin(url, a["href"])
             if urlparse(link).netloc == urlparse(start_url).netloc:
