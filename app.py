@@ -69,6 +69,17 @@ def status():
 def get_progress():
     return jsonify(progress)
 
+@app.route("/privacy")
+def privacy():
+    return render_template("privacy.html")
+
+@app.route("/terms")
+def terms():
+    return render_template("terms.html")
+
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
 
 @app.route("/stop", methods=["POST"])
 def stop():
