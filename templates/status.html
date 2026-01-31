@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Progress</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <div class="card">
+        <h2>⏳ Download Progress</h2>
+        <p id="message">Starting...</p>
+        <p id="count"></p>
+
+        <button id="stopBtn" onclick="stopJob()">🛑 STOP</button>
+
+        <a id="downloadBtn" href="/download" style="display:none;">
+            <button>📦 Download ZIP</button>
+        </a>
+    </div>
+
+    <script>
+        async function pollProgress() {
+            const res = await fetch("/progress");
+            const data = await res.json();
+
+            document.getElementById("message").innerText = data.message;
+            document.getElementById("count").innerText =
+                data.downloaded ? `Images downloaded: ${data.downloaded}` : "";
+
+            if (data.status === "done") {
+                document.getElementById("downloadBtn").style.display = "block";
+                document.getElementById("stopBtn").style.display = "none";
+            } else if (data.status === "stopped") {
+                document.getElementById("stopBtn").disabled = true;
+            } else {
+                setTimeout(pollProgress, 3000);
+            }
+        }
+
+        async function stopJob() {
+            await fetch("/stop", { method: "POST" });
+        }
+
+        pollProgress();
+    </script>
+
+</body>
+
+</html>
