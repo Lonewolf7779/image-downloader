@@ -20,6 +20,15 @@ progress = {
 }
 
 
+@app.context_processor
+def inject_settings():
+    # allow deploying services to set ADSENSE_CLIENT as an env var (e.g. ca-pub-XXXXXXXX)
+    return {
+        'adsense_client': os.environ.get('ADSENSE_CLIENT', ''),
+        'adsense_ad_slot': os.environ.get('ADSENSE_AD_SLOT', '')
+    }
+
+
 def background_job(url):
     global progress
     try:

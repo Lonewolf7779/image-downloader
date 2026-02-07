@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
-    font-family: 'Poppins', system-ui, -apple-system, Segoe UI, sans-serif;
+    font-family: Inter, 'Noto Sans JP', system-ui, -apple-system, Segoe UI, sans-serif;
+    font-weight: 300;
 }
 
 /* ================= THEMES ================= */
@@ -15,42 +16,53 @@ body {
     transition: background 0.6s ease;
 }
 
+/* center the main content for small screens */
+main {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
 /* Instagram */
 .theme-instagram {
-    background: linear-gradient(135deg,
-            #f58529,
-            #dd2a7b,
-            #8134af,
-            #515bd4);
+    background-color: #111;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url('/static/anime-illustration.svg');
+    background-size: cover;
+    background-position: center;
 }
 
 /* Canva */
 .theme-canva {
-    background: linear-gradient(135deg,
-            #00c4cc,
-            #7d2ae8);
+    background-color: #072a2b;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.28)), url('/static/anime-girl.svg');
+    background-size: cover;
+    background-position: center;
 }
 
 /* Sunset */
 .theme-sunset {
-    background: linear-gradient(135deg,
-            #ff7a18,
-            #ff416c);
+    background-color: #2b0b0b;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.28)), url('/static/anime-illustration.svg');
+    background-size: cover;
+    background-position: center;
 }
 
 /* Ocean */
 .theme-ocean {
-    background: linear-gradient(135deg,
-            #00c6ff,
-            #0072ff);
+    background-color: #002b3a;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.28)), url('/static/anime-girl.svg');
+    background-size: cover;
+    background-position: center;
 }
 
 /* Dark Pro */
 .theme-dark {
-    background: linear-gradient(135deg,
-            #0f0c29,
-            #302b63,
-            #24243e);
+    background-color: #0f0c29;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('/static/anime-illustration.svg');
+    background-size: cover;
+    background-position: center;
 }
 
 /* ================= CARD ================= */
@@ -109,6 +121,35 @@ body {
     box-shadow: 0 10px 36px rgba(0, 0, 0, 0.38)
 }
 
+/* allow SVG hero to scale nicely and remain crisp */
+.hero-illustration[src$=".svg"] {
+    width: 220px;
+    height: auto;
+    border-radius: 14px;
+}
+
+/* non-SVG hero (raster) sizing */
+.hero-illustration[src$=".jpg"],
+.hero-illustration[src$=".jpeg"],
+.hero-illustration[src$=".png"] {
+    width: 220px;
+    height: auto;
+    border-radius: 12px;
+}
+
+/* Reduce hero height by ~60% (keep width auto to preserve aspect) */
+.hero-illustration {
+    /* final increase: +50% from previous size */
+    max-height: 168px; /* 112 * 1.5 */
+    width: auto;
+}
+
+@media (min-width: 900px) {
+    .hero-illustration {
+        max-height: 332px; /* 221 * 1.5 ~= 331.5 */
+    }
+}
+
 /* floating character on larger screens */
 .hero-figure {
     position: absolute;
@@ -116,6 +157,13 @@ body {
     bottom: 18px;
     width: 140px;
     opacity: 0.95;
+}
+
+/* hide floating illustration on smaller screens so card remains centered */
+@media (max-width: 900px) {
+    .hero-figure {
+        display: none;
+    }
 }
 
 @media (min-width: 900px) {
@@ -139,6 +187,7 @@ body {
 h1 {
     margin: 0 0 6px;
     font-size: 1.9rem;
+    font-weight: 600;
 }
 
 .tagline {

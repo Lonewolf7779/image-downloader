@@ -13,13 +13,16 @@
     <!-- Web App Manifest -->
     <link rel="manifest" href="/static/manifest.json">
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Clean UI fonts (Inter + Noto Sans JP for Japanese glyphs) -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+JP:wght@300;400&display=swap"
+        rel="stylesheet">
 
     <!-- Google AdSense: add your client ID into the script below when ready -->
-    <!-- Example (replace ca-pub-XXXXXXXX):
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXX" crossorigin="anonymous"></script>
-    -->
+    <!--Example (replace ca-pub-XXXXXXXX):-->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1328727126151207"
+        crossorigin="anonymous"></script>
+
 
     <link rel="stylesheet" href="/static/style.css">
     <link rel="canonical" href="{{ request.url_root }}">
@@ -51,13 +54,6 @@
             <img src="/static/logo.svg" alt="Genki" />
             <span>Genki</span>
         </a>
-        <div class="themes" aria-hidden>
-            <button onclick="setTheme('theme-instagram')" title="Vibrant"></button>
-            <button onclick="setTheme('theme-canva')" title="Teal"></button>
-            <button onclick="setTheme('theme-sunset')" title="Sunset"></button>
-            <button onclick="setTheme('theme-ocean')" title="Ocean"></button>
-            <button onclick="setTheme('theme-dark')" title="Dark"></button>
-        </div>
     </header>
 
     <main>
@@ -76,6 +72,9 @@
     </div>
 
     <script>
+        // The server may provide an AdSense client id via `adsense_client` context variable
+        window.ADSENSE_CLIENT = "{{ adsense_client or '' }}";
+
         function setTheme(name) { document.body.className = name; }
 
         // Consent management for ads
@@ -83,14 +82,22 @@
             const banner = document.getElementById('cookie-consent');
             const accepted = localStorage.getItem('genki_ads_consent');
             function loadAds() {
-                // Replace CLIENT_ID when ready (ca-pub-XXXXXXXX)
-                const CLIENT = 'REPLACE_WITH_CA_PUB';
+                const CLIENT = (window.ADSENSE_CLIENT || '').trim();
                 if (!CLIENT || CLIENT.indexOf('REPLACE') === 0) return;
                 if (window.adsbygoogleLoaded) return;
                 const s = document.createElement('script');
                 s.async = true;
                 s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${CLIENT}`;
                 s.crossOrigin = 'anonymous';
+                s.onload = function () {
+                    // initialize any placeholder ad slots on the page
+                    const slots = document.querySelectorAll('ins.adsbygoogle');
+                    slots.forEach(() => {
+                        try {
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        } catch (e) { console.warn('ad push failed', e); }
+                    });
+                };
                 document.head.appendChild(s);
                 window.adsbygoogleLoaded = true;
             }

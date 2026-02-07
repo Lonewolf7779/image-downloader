@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fff1f0"/>
+      <stop offset="100%" stop-color="#ffe"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#sky)"/>
+  <!-- Rising sun -->
+  <circle cx="600" cy="120" r="70" fill="#e53935" opacity="0.95"/>
+  <!-- Mount Fuji -->
+  <path d="M80 360 L220 140 L360 360 Z" fill="#2b6ba3"/>
+  <path d="M220 180 L260 220 L220 240 L180 220 Z" fill="#fff" opacity="0.9" transform="translate(-20, -20) scale(0.9)"/>
+  <path d="M360 360 L500 150 L640 360 Z" fill="#3b7db8"/>
+  <path d="M500 200 L540 240 L500 260 L460 240 Z" fill="#fff" opacity="0.9" transform="translate(-20, -20) scale(0.85)"/>
+  <!-- Foreground blossoms (stylized) -->
+  <g fill="#ffd6dd" opacity="0.95">
+    <circle cx="120" cy="380" r="6"/>
+    <circle cx="150" cy="400" r="5"/>
+    <circle cx="200" cy="380" r="7"/>
+    <circle cx="260" cy="400" r="5"/>
+  </g>
+</svg>

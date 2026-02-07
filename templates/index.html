@@ -5,24 +5,31 @@
 {% block content %}
 <div class="card">
     <div class="hero">
-        <img src="/static/anime-girl.svg" alt="anime girl" class="hero-illustration">
+        <img src="/static/hero_custom.jpg" alt="hero image" class="hero-illustration">
     </div>
 
     <h1>Genki Image Downloader</h1>
-    <p class="tagline">Fast · Cute · Professional ✨</p>
+    <p class="tagline">Fast · Reliable · Respectful of creators — curated with Japanese-inspired aesthetics</p>
 
-    <form method="POST">
-        <input name="url" placeholder="Paste website URL…" required>
+    <form method="POST" aria-label="Start image download">
+        <input name="url" placeholder="Paste website URL (https://example.com)" required>
         <button type="submit" class="primary">Start Download</button>
     </form>
 
+    <section class="how-it-works" aria-labelledby="how-it-works-title">
+        <h3 id="how-it-works-title">How it works</h3>
+        <p class="how-it-works-line">Genki helps designers, developers, and researchers gather publicly visible images they are authorized to use — efficient, respectful, and with a touch of kawaii.</p>
+        <p class="disclaimer">This tool does not bypass paywalls, logins, or access private content.</p>
+    </section>
+
     <!-- Ad slot placeholder: will load after consent (responsive) -->
     <div class="ad-slot ad-slot-responsive">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-REPLACE" data-ad-slot="REPLACE"
-            data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="{{ adsense_client or 'ca-pub-REPLACE' }}"
+            data-ad-slot="{{ adsense_ad_slot or 'REPLACE' }}" data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
     </div>
 
-    <p class="note">Max 200 images · ZIP output · Respect copyrights</p>
+    <p class="note">For designers, developers, and researchers: only download content you own or are authorized to use. ZIP output; we respect site restrictions and creator rights.</p>
 
     <footer>
         <a href="/privacy">Privacy</a>
