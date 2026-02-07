@@ -3,15 +3,24 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Genki Image Downloader{% endblock %}</title>
+    <title>{% block title %}Genki Image Downloader – Download Images from a Website{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Fast, safe image downloader with beautiful anime-inspired UI">
+    <meta name="description" content="Genki lets designers, developers, and researchers download images from a website into a ZIP for publicly accessible pages, respecting creator rights and site rules.">
     <meta name="robots" content="index,follow">
     <!-- Replace with your Google Search Console verification token -->
     <meta name="google-site-verification" content="REPLACE_WITH_YOUR_TOKEN">
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/static/manifest.json">
+
+        <!-- Google Analytics 4 (placeholder ID) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);} 
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXX');
+        </script>
 
     <!-- Clean UI fonts (Inter + Noto Sans JP for Japanese glyphs) -->
     <link
