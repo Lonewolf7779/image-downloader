@@ -153,5 +153,14 @@ def sitemap():
     return Response('\n'.join(xml), mimetype='application/xml')
 
 
+@app.route('/ads.txt')
+def ads_txt():
+    # Serve ads.txt from the static folder so Google AdSense can find the publisher record
+    try:
+        return send_file(os.path.join(app.root_path, 'static', 'ads.txt'), mimetype='text/plain')
+    except Exception:
+        return "", 404
+
+
 if __name__ == "__main__":
     app.run(debug=True)
