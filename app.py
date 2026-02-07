@@ -49,13 +49,24 @@ def background_job(url):
         if progress["status"] == "stopped":
             return
 
+        # If nothing was downloaded, report and skip zipping
+        if not progress.get("downloaded"):
+            progress["status"] = "error"
+            progress["message"] = "No downloadable images found or access blocked."
+            return
+
         progress["status"] = "zipping"
         progress["message"] = "Creating ZIP file..."
 
         zip_images()
 
-        progress["status"] = "done"
-        progress["message"] = "ZIP ready! 🎉"
+        # confirm zip exists before signalling done
+        if os.path.exists(ZIP_PATH):
+            progress["status"] = "done"
+            progress["message"] = "ZIP ready! 🎉"
+        else:
+            progress["status"] = "error"
+            progress["message"] = "Failed to create ZIP file."
 
     except Exception as e:
         progress["status"] = "error"

@@ -52,7 +52,27 @@
     }
 
     async function stopJob() {
-        await fetch("/stop", { method: "POST" });
+        try {
+            // provide immediate feedback to user
+            const stopBtn = document.getElementById("stopBtn");
+            stopBtn.disabled = true;
+            document.getElementById("message").innerText = 'Stopping...';
+
+            const res = await fetch("/stop", { method: "POST" });
+            const json = await res.json().catch(() => ({}));
+
+            if (json && json.stopped) {
+                stopBtn.style.display = 'none';
+                // poll once shortly to update status
+                setTimeout(poll, 500);
+            } else {
+                document.getElementById("message").innerText = 'Stop request failed';
+                stopBtn.disabled = false;
+            }
+        } catch (e) {
+            document.getElementById("message").innerText = 'Stop request failed';
+            try { document.getElementById("stopBtn").disabled = false; } catch (e) {}
+        }
     }
 
     poll();
