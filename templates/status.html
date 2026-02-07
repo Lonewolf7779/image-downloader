@@ -1,52 +1,60 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <title>Progress</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style.css">
-</head>
+{% block title %}Download Progress — Genki{% endblock %}
 
-<body>
+{% block content %}
+<div class="card">
+    <h2>⏳ Download Progress</h2>
 
-    <div class="card">
-        <h2>⏳ Download Progress</h2>
-        <p id="message">Starting...</p>
-        <p id="count"></p>
-
-        <button id="stopBtn" onclick="stopJob()">🛑 STOP</button>
-
-        <a id="downloadBtn" href="/download" style="display:none;">
-            <button>📦 Download ZIP</button>
-        </a>
+    <div class="progress-wrap">
+        <div id="progressBar" class="progress-bar" style="width:0%"></div>
     </div>
 
-    <script>
-        async function pollProgress() {
+    <p id="message">Starting…</p>
+    <p id="count"></p>
+
+    <div class="actions">
+        <button id="stopBtn" class="danger" onclick="stopJob()">Stop</button>
+        <a id="downloadBtn" href="/download" style="display:none;">
+            <button class="primary">Download ZIP</button>
+        </a>
+    </div>
+</div>
+
+<!-- small ad slot on status page -->
+<div class="ad-slot ad-slot-inline">
+    <ins class="adsbygoogle" style="display:inline-block;width:320px;height:100px" data-ad-client="ca-pub-REPLACE"
+        data-ad-slot="REPLACE"></ins>
+</div>
+
+<script>
+    async function poll() {
+        try {
             const res = await fetch("/progress");
             const data = await res.json();
 
-            document.getElementById("message").innerText = data.message;
-            document.getElementById("count").innerText =
-                data.downloaded ? `Images downloaded: ${data.downloaded}` : "";
+            document.getElementById("message").innerText = data.message || '';
+            document.getElementById("count").innerText = data.downloaded ? `Images: ${data.downloaded}` : '';
+
+            // rough progress percent
+            const percent = Math.min(100, Math.round((data.downloaded || 0) / 2));
+            document.getElementById('progressBar').style.width = percent + '%';
 
             if (data.status === "done") {
-                document.getElementById("downloadBtn").style.display = "block";
+                document.getElementById("downloadBtn").style.display = "inline-block";
                 document.getElementById("stopBtn").style.display = "none";
-            } else if (data.status === "stopped") {
-                document.getElementById("stopBtn").disabled = true;
-            } else {
-                setTimeout(pollProgress, 3000);
+            } else if (data.status !== "stopped" && data.status !== "error") {
+                setTimeout(poll, 1500);
             }
+        } catch (e) {
+            document.getElementById("message").innerText = 'Error fetching progress';
         }
+    }
 
-        async function stopJob() {
-            await fetch("/stop", { method: "POST" });
-        }
+    async function stopJob() {
+        await fetch("/stop", { method: "POST" });
+    }
 
-        pollProgress();
-    </script>
-
-</body>
-
-</html>
+    poll();
+</script>
+{% endblock %}

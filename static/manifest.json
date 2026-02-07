@@ -1,0 +1,15 @@
+{
+    "name": "Genki Image Downloader",
+    "short_name": "Genki",
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#ff7aa2",
+    "background_color": "#ffffff",
+    "icons": [
+        {
+            "src": "/static/logo.svg",
+            "sizes": "48x48",
+            "type": "image/svg+xml"
+        }
+    ]
+}

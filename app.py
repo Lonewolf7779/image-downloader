@@ -1,39 +1,137 @@
-from flask import Flask, render_template, request, send_file, redirect, url_for, jsonify
-from image_downloader import crawl_and_download, zip_images, stop_now, reset_stop_flag
+from flask import Flask, render_template, request, redirect, url_for, jsonify, send_file
+from image_downloader import (
+    crawl_and_download,
+    zip_images,
+    stop_now,
+    reset_stop_flag,
+    ZIP_PATH as ZIP_PATH
+)
 import threading
 import os
 
-print("🔥 LOADED NEW app.py WITH PRIVACY ROUTES 🔥")
-
 app = Flask(__name__)
 
-# ===== ROUTES START HERE =====
+# ZIP_PATH imported from image_downloader gives an absolute path
 
-@app.route("/")
+progress = {
+    "status": "idle",   # idle | running | stopped | zipping | done | error
+    "downloaded": 0,
+    "message": ""
+}
+
+
+def background_job(url):
+    global progress
+    try:
+        reset_stop_flag()
+        progress.update({
+            "status": "running",
+            "downloaded": 0,
+            "message": "Starting download..."
+        })
+
+        crawl_and_download(
+            url,
+            max_pages=30,
+            max_images=200,
+            progress=progress
+        )
+
+        if progress["status"] == "stopped":
+            return
+
+        progress["status"] = "zipping"
+        progress["message"] = "Creating ZIP file..."
+
+        zip_images()
+
+        progress["status"] = "done"
+        progress["message"] = "ZIP ready! 🎉"
+
+    except Exception as e:
+        progress["status"] = "error"
+        progress["message"] = str(e)
+
+
+@app.route("/", methods=["GET", "POST"])
 def index():
+    if request.method == "POST":
+        url = request.form.get("url")
+        if url:
+            if not url.startswith(("http://", "https://")):
+                url = "https://" + url
+
+            threading.Thread(target=background_job, args=(url,)).start()
+            return redirect(url_for("status"))
+
     return render_template("index.html")
+
 
 @app.route("/status")
 def status():
     return render_template("status.html")
 
+
 @app.route("/progress")
 def get_progress():
-    return jsonify({"ok": True})
+    return jsonify(progress)
+
+
+@app.route("/stop", methods=["POST"])
+def stop():
+    stop_now()
+    progress["status"] = "stopped"
+    progress["message"] = "Download stopped by user"
+    return jsonify({"stopped": True})
+
+
+@app.route("/download")
+def download():
+    if os.path.exists(ZIP_PATH):
+        return send_file(ZIP_PATH, as_attachment=True)
+    return "ZIP not ready yet"
+
 
 @app.route("/privacy")
 def privacy():
     return render_template("privacy.html")
 
+
 @app.route("/terms")
 def terms():
     return render_template("terms.html")
+
 
 @app.route("/contact")
 def contact():
     return render_template("contact.html")
 
-# ===== ROUTES END HERE =====
+
+@app.route('/sitemap.xml')
+def sitemap():
+    # generate a simple sitemap for SEO
+    from flask import Response
+    base = request.url_root.rstrip('/')
+    urls = [
+        (f"{base}/", "daily", "1.0"),
+        (f"{base}/status", "hourly", "0.8"),
+        (f"{base}/privacy", "monthly", "0.3"),
+        (f"{base}/terms", "monthly", "0.3"),
+        (f"{base}/contact", "monthly", "0.3"),
+    ]
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    from datetime import datetime
+    now = datetime.utcnow().date().isoformat()
+    for u, freq, pr in urls:
+        xml.append('<url>')
+        xml.append(f"  <loc>{u}</loc>")
+        xml.append(f"  <lastmod>{now}</lastmod>")
+        xml.append(f"  <changefreq>{freq}</changefreq>")
+        xml.append(f"  <priority>{pr}</priority>")
+        xml.append('</url>')
+    xml.append('</urlset>')
+    return Response('\n'.join(xml), mimetype='application/xml')
+
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

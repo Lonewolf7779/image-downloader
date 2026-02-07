@@ -1,25 +1,38 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
+{% block title %}Privacy Policy{% endblock %}
 
-<head>
-    <title>Privacy Policy</title>
-</head>
-
-<body>
+{% block content %}
+<div class="card">
     <h2>Privacy Policy</h2>
     <p>
-        This website does not collect personal information.
-        We do not store user data beyond temporary processing required to generate downloads.
-    </p>
-    <p>
-        Third-party services such as Google AdSense may use cookies to display ads.
-    </p>
-    <p>
-        We do not collect personal information.
-        URLs entered are used only temporarily to process image downloads.
-        Cookies may be used by third-party services such as Google AdSense.
+        We do not permanently store downloaded images or submitted URLs on our public servers.
+        Images are temporarily downloaded to create a ZIP archive and then retained only as long as needed.
     </p>
 
-</body>
+    <h3>Data Collected</h3>
+    <p>
+        We may collect minimal usage data for analytics and debugging (non-identifying). We do not sell personal data.
+    </p>
 
-</html>
+    <h3>Cookies & Advertising</h3>
+    <p>
+        We may display Google AdSense ads. Third-party services (including Google) may place cookies and collect certain
+        information
+        to serve personalized ads. To manage ads and cookies, review the Google Ad Settings and your browser
+        preferences.
+    </p>
+
+    <h3>Legal Use</h3>
+    <p>
+        You are responsible for ensuring that downloading images from a website complies with that site's terms and
+        applicable law.
+    </p>
+
+    <h3>Contact</h3>
+    <p>
+        For data/privacy questions contact: support@genki-downloader.com
+    </p>
+
+    <footer><a href="/">← Back</a></footer>
+</div>
+{% endblock %}

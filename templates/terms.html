@@ -1,24 +1,14 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
+{% block title %}Terms of Service{% endblock %}
 
-<head>
-    <title>Terms of Use</title>
-</head>
-
-<body>
-    <h2>Terms of Use</h2>
+{% block content %}
+<div class="card">
+    <h2>Terms of Service</h2>
     <p>
-        This tool is provided for personal and educational use only.
-        Users are responsible for complying with website terms and copyright laws.
+        This tool is for personal and educational use only.
+        Users are responsible for respecting website copyrights.
     </p>
-    <p>
-        We are not responsible for misuse of this tool.
-    </p>
-    <p>
-This website allows users to download publicly available images from websites.
-Users are responsible for ensuring they have the right to download and use content.
-We do not host or claim ownership of any images.
-</p>
-</body>
 
-</html>
+    <footer><a href="/">← Back</a></footer>
+</div>
+{% endblock %}

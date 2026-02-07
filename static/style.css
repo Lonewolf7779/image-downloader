@@ -1,6 +1,6 @@
 * {
     box-sizing: border-box;
-    font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+    font-family: 'Poppins', system-ui, -apple-system, Segoe UI, sans-serif;
 }
 
 /* ================= THEMES ================= */
@@ -64,6 +64,74 @@ body {
     backdrop-filter: blur(14px);
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
     text-align: center;
+}
+
+.site-header {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    right: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+}
+
+.site-header .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #fff;
+    pointer-events: auto;
+}
+
+.site-header .logo img {
+    width: 36px;
+    height: 36px
+}
+
+.site-header .logo span {
+    font-weight: 700;
+    font-size: 1.1rem
+}
+
+.hero {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 6px;
+}
+
+.hero-illustration {
+    width: 140px;
+    height: 110px;
+    border-radius: 12px;
+    box-shadow: 0 10px 36px rgba(0, 0, 0, 0.38)
+}
+
+/* floating character on larger screens */
+.hero-figure {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    width: 140px;
+    opacity: 0.95;
+}
+
+@media (min-width: 900px) {
+    .card {
+        max-width: 720px;
+        padding: 36px
+    }
+
+    .hero-illustration {
+        width: 220px;
+        height: 180px
+    }
+
+    .hero-figure {
+        width: 220px
+    }
 }
 
 /* ================= TEXT ================= */
@@ -140,6 +208,49 @@ button[type="submit"] {
     backdrop-filter: blur(6px);
 }
 
+.primary {
+    background: linear-gradient(135deg, #ff7aa2, #ff9f6b);
+    color: #fff;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 12px;
+    cursor: pointer
+}
+
+.primary:hover {
+    filter: brightness(1.05)
+}
+
+.danger {
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 12px
+}
+
+.progress-wrap {
+    width: 100%;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 12px 0
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ffe29f, #ff7aa2);
+    width: 0
+}
+
 button[type="submit"]:hover {
     background: rgba(255, 255, 255, 0.35);
 }
@@ -156,4 +267,56 @@ button[type="submit"]:hover {
     margin-top: 10px;
     font-size: 0.7rem;
     opacity: 0.6;
+}
+
+footer a {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 6px;
+    text-decoration: none;
+    font-size: 0.85rem
+}
+
+.cookie-consent {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 18px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    z-index: 9999
+}
+
+.cookie-consent .consent-inner {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between
+}
+
+.cookie-consent p {
+    margin: 0;
+    font-size: 0.95rem
+}
+
+.cookie-consent .consent-actions button {
+    margin-left: 8px
+}
+
+.ad-slot {
+    margin: 14px 0;
+    display: flex;
+    justify-content: center
+}
+
+.ad-slot-responsive {
+    width: 100%;
+    max-width: 728px
+}
+
+.ad-slot-inline {
+    display: flex;
+    justify-content: center
 }

@@ -1,55 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Image Downloader</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1328727126151207"
-        crossorigin="anonymous"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style.css">
-</head>
+{% block title %}Genki — Fast Image Downloader{% endblock %}
 
-<body class="theme-instagram">
-
-    <div class="card">
-        <h1>Genki Image Downloader</h1>
-        <p class="tagline">
-            Fast・Cute・Powerful ✨<br>
-            Download all images from a webpage in one click.
-        </p>
-
-        <div class="purpose">
-            <h3>🌸 What is this?</h3>
-            <p>
-                This tool helps you collect images from a webpage and download them as a ZIP file.
-                Perfect for designers, researchers, creators, and personal archiving.
-            </p>
-        </div>
-
-        <form method="POST">
-            <input type="text" name="url" placeholder="Paste website URL here…" required>
-            <button type="submit">Start Download 💖</button>
-        </form>
-
-        <p class="note">
-            Note:Please wait 30–60 seconds while images are collected.<br>
-            You’ll be able to download a ZIP once ready.
-        </p>
-
-        <p class="disclaimer">
-            ⚠️ This tool is intended for personal and educational use only.<br>
-            Please respect website terms of service and copyright laws.
-        </p>
-
-        <footer>
-            <span>Made with energy and care 💕<br></span>
-            <a href="/privacy">Privacy</a> ·
-            <a href="/terms">Terms</a> ·
-            <a href="/contact">Contact</a>
-        </footer>
+{% block content %}
+<div class="card">
+    <div class="hero">
+        <img src="/static/anime-girl.svg" alt="anime girl" class="hero-illustration">
     </div>
 
-</body>
+    <h1>Genki Image Downloader</h1>
+    <p class="tagline">Fast · Cute · Professional ✨</p>
 
-</html>
+    <form method="POST">
+        <input name="url" placeholder="Paste website URL…" required>
+        <button type="submit" class="primary">Start Download</button>
+    </form>
+
+    <!-- Ad slot placeholder: will load after consent (responsive) -->
+    <div class="ad-slot ad-slot-responsive">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-REPLACE" data-ad-slot="REPLACE"
+            data-ad-format="auto" data-full-width-responsive="true"></ins>
+    </div>
+
+    <p class="note">Max 200 images · ZIP output · Respect copyrights</p>
+
+    <footer>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/contact">Contact</a>
+    </footer>
+</div>
+{% endblock %}
