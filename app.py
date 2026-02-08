@@ -76,7 +76,20 @@ def background_job(url):
 @app.route("/app", methods=["GET", "POST"])
 def index():
     # Interactive downloader app now lives at /app so the root can be a static landing page.
+    # if request.method == "POST":
+    #     url = request.form.get("url")
+    #     if url:
+    #         if not url.startswith(("http://", "https://")):
+    #             url = "https://" + url
+
+    #         threading.Thread(target=background_job, args=(url,)).start()
+    #         return redirect(url_for("status"))
     if request.method == "POST":
+        # 🔒 Single-job lock
+        if progress["status"] in ("running", "zipping"):
+            progress["message"] = "Another download is already running. Please wait."
+            return redirect(url_for("status"))
+
         url = request.form.get("url")
         if url:
             if not url.startswith(("http://", "https://")):
@@ -84,9 +97,7 @@ def index():
 
             threading.Thread(target=background_job, args=(url,)).start()
             return redirect(url_for("status"))
-
-    return render_template("index.html")
-
+        return render_template("index.html")
 
 # @app.route("/", methods=["GET"])
 # def landing():
