@@ -29,9 +29,7 @@
         rel="stylesheet">
 
     <!-- Google AdSense: add your client ID into the script below when ready -->
-    <!--Example (replace ca-pub-XXXXXXXX):-->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1328727126151207"
-        crossorigin="anonymous"></script>
+    <!-- AdSense script removed from template pages to ensure ads only appear on the static landing page -->
 
 
     <link rel="stylesheet" href="/static/style.css">
@@ -70,62 +68,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- AdSense / Consent placeholder -->
-    <div id="cookie-consent" class="cookie-consent" aria-live="polite" style="display:none">
-        <div class="consent-inner">
-            <p>We display ads to support this site. Do you consent to personalized ads?</p>
-            <div class="consent-actions">
-                <button id="consentAccept" class="primary">Accept</button>
-                <button id="consentDecline" class="danger">Decline</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // The server may provide an AdSense client id via `adsense_client` context variable
-        window.ADSENSE_CLIENT = "{{ adsense_client or '' }}";
-
-        function setTheme(name) { document.body.className = name; }
-
-        // Consent management for ads
-        (function () {
-            const banner = document.getElementById('cookie-consent');
-            const accepted = localStorage.getItem('genki_ads_consent');
-            function loadAds() {
-                const CLIENT = (window.ADSENSE_CLIENT || '').trim();
-                if (!CLIENT || CLIENT.indexOf('REPLACE') === 0) return;
-                if (window.adsbygoogleLoaded) return;
-                const s = document.createElement('script');
-                s.async = true;
-                s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${CLIENT}`;
-                s.crossOrigin = 'anonymous';
-                s.onload = function () {
-                    // initialize any placeholder ad slots on the page
-                    const slots = document.querySelectorAll('ins.adsbygoogle');
-                    slots.forEach(() => {
-                        try {
-                            (adsbygoogle = window.adsbygoogle || []).push({});
-                        } catch (e) { console.warn('ad push failed', e); }
-                    });
-                };
-                document.head.appendChild(s);
-                window.adsbygoogleLoaded = true;
-            }
-
-            if (accepted === 'true') { loadAds(); }
-            else if (accepted === null) { banner.style.display = 'block'; }
-
-            document.getElementById('consentAccept').addEventListener('click', function () {
-                localStorage.setItem('genki_ads_consent', 'true');
-                banner.style.display = 'none';
-                loadAds();
-            });
-            document.getElementById('consentDecline').addEventListener('click', function () {
-                localStorage.setItem('genki_ads_consent', 'false');
-                banner.style.display = 'none';
-            });
-        })();
-    </script>
+    <!-- AdSense and consent removed from templated pages to prevent ads on tool screens -->
 </body>
 
 </html>

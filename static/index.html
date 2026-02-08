@@ -56,8 +56,21 @@
             <form action="/app" method="POST" style="display:flex;gap:8px;align-items:center;">
                 <input name="url" placeholder="Paste website URL (https://example.com)" required
                     style="flex:1;padding:8px;border:1px solid #ddd;border-radius:6px;" />
-                <button type="submit" class="primary" style="padding:8px 12px;background:#2b6cb0;color:#fff;border-radius:6px;border:none;">Start</button>
+                <button type="submit" class="primary"
+                    style="padding:8px 12px;background:#2b6cb0;color:#fff;border-radius:6px;border:none;">Start</button>
             </form>
+        </div>
+
+        <!-- AdSense block: only present on the static landing page -->
+        <div class="ad-slot" style="margin:20px 0;">
+            <script async
+                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1328727126151207"
+                crossorigin="anonymous"></script>
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1328727126151207"
+                data-ad-slot="REPLACE" data-ad-format="auto" data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
 
         <hr style="margin:24px 0;" />
