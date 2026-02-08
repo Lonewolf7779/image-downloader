@@ -91,7 +91,7 @@ def index():
 @app.route("/", methods=["GET"])
 def landing():
     # Serve the static, content-rich landing page so root loads the publisher content.
-    return send_file(os.path.join(app.root_path, 'static', 'landing.html'))
+    return render_template("landing.html")
 
 
 @app.route("/status")
