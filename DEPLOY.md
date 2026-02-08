@@ -25,19 +25,46 @@ python app.py
 ```
 
 ## Deploy to Render
-1. Create a new Web Service on Render.
-2. Connect the repository.
-3. Set the `Start Command` to: `gunicorn app:app`.
-4. Add environment variables in Render Dashboard: `ADSENSE_CLIENT` and `ADSENSE_AD_SLOT`.
+1. Recommended: use a two-service setup so the root `/` is served instantly by a static site (no backend cold start).
 
-### Render checklist for AdSense
+	 - Commit the included `render.yaml` in this repository. It defines two services:
+		 - `genki-static` — a Render Static Site that publishes the `static/` folder (this will serve `/` immediately).
+		 - `genki-backend` — a Python Web Service that runs the interactive backend at its own URL (keeps heavy work off the static front page).
 
-1. In Render → your service → **Environment** add these variables:
-	- `ADSENSE_CLIENT` = `ca-pub-XXXXXXXX` (your publisher id)
-	- `ADSENSE_AD_SLOT` = `1234567890` (your ad unit id)
-2. Commit and push `static/ads.txt` (this repo already has `static/ads.txt`). Ensure it is reachable at `https://<your-site>/ads.txt`.
-3. Confirm the site serves `ads.txt` over HTTPS (open `https://<your-site>/ads.txt`).
-4. If you changed environment variables, trigger a redeploy or wait for auto-deploy.
+	 - Push the `render.yaml` to your repo, then on Render choose **New → Web Service from Render.yaml** (or similar) to create both services from the manifest.
+
+2. After both services are created:
+	 - Assign your primary custom domain (e.g. `example.com`) to the **static** service (`genki-static`). This makes `https://example.com/` serve the static landing page instantly.
+	 - Assign a subdomain for the backend (e.g. `app.example.com`) to the **backend** service (`genki-backend`). This will be the interactive app URL.
+
+3. Update `static/index.html` to point the "Open the App" link at your backend host (for example `https://app.example.com/app`). By default the file links to `/app` — update it to the backend subdomain after you map domains on Render.
+
+4. Environment variables and ads:
+	 - Do not commit your AdSense secrets. In Render → your service → **Environment** add:
+		 - `ADSENSE_CLIENT` = `ca-pub-XXXXXXXX` (your publisher id)
+		 - `ADSENSE_AD_SLOT` = `1234567890` (your ad unit id)
+	 - Add these to the **backend** service; the static site does not need them.
+
+5. Verify `ads.txt` is served from the static site at `https://example.com/ads.txt` (the repo already contains `static/ads.txt`).
+
+### Why this helps
+
+- Serving the landing page as a static site eliminates Render cold-start delays for `/`, which removes the wake screen Google reviewers often encounter.
+- Keeping the interactive downloader on a separate backend service prevents the static front page from depending on the backend to load.
+
+### Notes & options
+
+- If you prefer the interactive experience at the same domain path (`/app`) instead of a subdomain, you can either:
+	- Update the static site to redirect `/app` to your backend subdomain, or
+	- Configure a proxy/rewrite (if using a CDN or reverse proxy) to forward `/app` to the backend service. (Render static sites do not automatically proxy arbitrary paths to a secondary service.)
+- After DNS and domain mapping changes, trigger redeploys or wait for Render to finish certificate provisioning.
+
+### Render checklist for AdSense (quick)
+
+1. Ensure `static/ads.txt` is committed and publicly reachable at your root domain.
+2. Confirm `Privacy`, `Terms`, and `Contact` pages are linked from the landing page footer.
+3. Verify the landing page loads instantly and the interactive app is reachable from the link you configured.
+4. Request AdSense review once verification and `ads.txt` are in place.
 
 ## Verify with Google
 

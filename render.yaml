@@ -1,4 +1,20 @@
 services:
+  - type: static_site
+    name: genki-static
+    env: static
+    staticPublishPath: static
+    branch: main
+    plan: free
+
+  - type: web_service
+    name: genki-backend
+    env: python
+    branch: main
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app -w 4 -b 0.0.0.0:$PORT
+    # Do not commit secrets here. Set ADSENSE_CLIENT and ADSENSE_AD_SLOT in Render's dashboard.
+services:
   - type: web
     name: image-downloader
     env: python

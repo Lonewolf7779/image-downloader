@@ -73,8 +73,9 @@ def background_job(url):
         progress["message"] = str(e)
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/app", methods=["GET", "POST"])
 def index():
+    # Interactive downloader app now lives at /app so the root can be a static landing page.
     if request.method == "POST":
         url = request.form.get("url")
         if url:
@@ -134,6 +135,7 @@ def sitemap():
     base = request.url_root.rstrip('/')
     urls = [
         (f"{base}/", "daily", "1.0"),
+        (f"{base}/app", "daily", "0.9"),
         (f"{base}/status", "hourly", "0.8"),
         (f"{base}/privacy", "monthly", "0.3"),
         (f"{base}/terms", "monthly", "0.3"),

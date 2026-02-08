@@ -147,13 +147,15 @@ main {
 /* Reduce hero height by ~60% (keep width auto to preserve aspect) */
 .hero-illustration {
     /* final increase: +50% from previous size */
-    max-height: 168px; /* 112 * 1.5 */
+    max-height: 168px;
+    /* 112 * 1.5 */
     width: auto;
 }
 
 @media (min-width: 900px) {
     .hero-illustration {
-        max-height: 332px; /* 221 * 1.5 ~= 331.5 */
+        max-height: 332px;
+        /* 221 * 1.5 ~= 331.5 */
     }
 }
 
@@ -378,7 +380,8 @@ footer a {
 }
 
 /* ensure status page and small inline ad blocks align centrally */
-.ad-slot-inline, .ad-slot {
+.ad-slot-inline,
+.ad-slot {
     margin-left: auto;
     margin-right: auto;
 }
