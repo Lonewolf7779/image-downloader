@@ -11,8 +11,6 @@ import os
 
 app = Flask(__name__)
 
-# ZIP_PATH imported from image_downloader gives an absolute path
-
 progress = {
     "status": "idle",   # idle | running | stopped | zipping | done | error
     "downloaded": 0,
@@ -22,10 +20,9 @@ progress = {
 
 @app.context_processor
 def inject_settings():
-    # allow deploying services to set ADSENSE_CLIENT as an env var (e.g. ca-pub-XXXXXXXX)
     return {
-        'adsense_client': os.environ.get('ADSENSE_CLIENT', ''),
-        'adsense_ad_slot': os.environ.get('ADSENSE_AD_SLOT', '')
+        "adsense_client": os.environ.get("ADSENSE_CLIENT", ""),
+        "adsense_ad_slot": os.environ.get("ADSENSE_AD_SLOT", "")
     }
 
 
@@ -49,7 +46,6 @@ def background_job(url):
         if progress["status"] == "stopped":
             return
 
-        # If nothing was downloaded, report and skip zipping
         if not progress.get("downloaded"):
             progress["status"] = "error"
             progress["message"] = "No downloadable images found or access blocked."
@@ -60,7 +56,6 @@ def background_job(url):
 
         zip_images()
 
-        # confirm zip exists before signalling done
         if os.path.exists(ZIP_PATH):
             progress["status"] = "done"
             progress["message"] = "ZIP ready! 🎉"
@@ -75,15 +70,6 @@ def background_job(url):
 
 @app.route("/app", methods=["GET", "POST"])
 def index():
-    # Interactive downloader app now lives at /app so the root can be a static landing page.
-    # if request.method == "POST":
-    #     url = request.form.get("url")
-    #     if url:
-    #         if not url.startswith(("http://", "https://")):
-    #             url = "https://" + url
-
-    #         threading.Thread(target=background_job, args=(url,)).start()
-    #         return redirect(url_for("status"))
     if request.method == "POST":
         # 🔒 Single-job lock
         if progress["status"] in ("running", "zipping"):
@@ -97,12 +83,9 @@ def index():
 
             threading.Thread(target=background_job, args=(url,)).start()
             return redirect(url_for("status"))
-        return render_template("index.html")
 
-# @app.route("/", methods=["GET"])
-# def landing():
-#     # Serve the static, content-rich landing page so root loads the publisher content.
-#     return render_template("landing.html")
+    return render_template("index.html")
+
 
 @app.route("/", methods=["GET"])
 def landing():
@@ -161,7 +144,6 @@ def landing():
   h1 {
     font-size: 2.2rem;
     font-weight: 600;
-    letter-spacing: 0.3px;
     margin-bottom: 12px;
   }
 
@@ -175,13 +157,11 @@ def landing():
   .note {
     font-size: 0.95rem;
     opacity: 0.85;
-    margin-top: 6px;
   }
 
   .actions {
     margin-top: 28px;
     display: flex;
-    align-items: center;
     gap: 16px;
     flex-wrap: wrap;
   }
@@ -191,8 +171,6 @@ def landing():
     padding: 12px 22px;
     border-radius: 999px;
     font-size: 0.95rem;
-    font-weight: 500;
-    border: 1px solid transparent;
     transition: all 0.25s ease;
   }
 
@@ -201,20 +179,10 @@ def landing():
     color: #0f172a;
   }
 
-  .btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 30px rgba(96,165,250,0.35);
-  }
-
   .btn-secondary {
     color: var(--text-muted);
     border: 1px solid var(--glass-border);
     background: rgba(255,255,255,0.04);
-  }
-
-  .btn-secondary:hover {
-    background: rgba(255,255,255,0.08);
-    color: var(--text-main);
   }
 
   .footer {
@@ -300,11 +268,10 @@ def contact():
     return render_template("contact.html")
 
 
-@app.route('/sitemap.xml')
+@app.route("/sitemap.xml")
 def sitemap():
-    # generate a simple sitemap for SEO
     from flask import Response
-    base = request.url_root.rstrip('/')
+    base = request.url_root.rstrip("/")
     urls = [
         (f"{base}/", "daily", "1.0"),
         (f"{base}/app", "daily", "0.9"),
@@ -313,25 +280,31 @@ def sitemap():
         (f"{base}/terms", "monthly", "0.3"),
         (f"{base}/contact", "monthly", "0.3"),
     ]
-    xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+
+    xml = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+    ]
+
     from datetime import datetime
     now = datetime.utcnow().date().isoformat()
+
     for u, freq, pr in urls:
-        xml.append('<url>')
-        xml.append(f"  <loc>{u}</loc>")
-        xml.append(f"  <lastmod>{now}</lastmod>")
-        xml.append(f"  <changefreq>{freq}</changefreq>")
-        xml.append(f"  <priority>{pr}</priority>")
-        xml.append('</url>')
-    xml.append('</urlset>')
-    return Response('\n'.join(xml), mimetype='application/xml')
+        xml.append("<url>")
+        xml.append(f"<loc>{u}</loc>")
+        xml.append(f"<lastmod>{now}</lastmod>")
+        xml.append(f"<changefreq>{freq}</changefreq>")
+        xml.append(f"<priority>{pr}</priority>")
+        xml.append("</url>")
+
+    xml.append("</urlset>")
+    return Response("\n".join(xml), mimetype="application/xml")
 
 
-@app.route('/ads.txt')
+@app.route("/ads.txt")
 def ads_txt():
-    # Serve ads.txt from the static folder so Google AdSense can find the publisher record
     try:
-        return send_file(os.path.join(app.root_path, 'static', 'ads.txt'), mimetype='text/plain')
+        return send_file(os.path.join(app.root_path, "static", "ads.txt"), mimetype="text/plain")
     except Exception:
         return "", 404
 
