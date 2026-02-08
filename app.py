@@ -96,19 +96,158 @@ def index():
 @app.route("/", methods=["GET"])
 def landing():
     return """
-    <html>
-      <head>
-        <title>Genki Image Downloader</title>
-        <meta name="robots" content="index,follow">
-      </head>
-      <body>
-        <h1>Genki Image Downloader</h1>
-        <p>Download images from publicly accessible websites.</p>
-        <p>This tool respects website policies and copyright.</p>
-        <a href="/app">Open the App</a>
-      </body>
-    </html>
-    """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Genki Image Downloader</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Minimal image downloader inspired by Japanese design. Download images from public websites respectfully.">
+<meta name="robots" content="index,follow">
+
+<style>
+  :root {
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.18);
+    --text-main: #f9fafb;
+    --text-muted: #cbd5f5;
+    --accent: #60a5fa;
+    --accent-hover: #3b82f6;
+  }
+
+  * {
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      linear-gradient(rgba(15,23,42,0.75), rgba(15,23,42,0.85)),
+      url("https://images.unsplash.com/photo-1549693578-d683be217e58?auto=format&fit=crop&w=1600&q=80");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    color: var(--text-main);
+  }
+
+  .glass {
+    max-width: 720px;
+    width: 100%;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 40px 42px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+
+  .note {
+    font-size: 0.95rem;
+    opacity: 0.85;
+    margin-top: 6px;
+  }
+
+  .actions {
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    text-decoration: none;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all 0.25s ease;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+    color: #0f172a;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 30px rgba(96,165,250,0.35);
+  }
+
+  .btn-secondary {
+    color: var(--text-muted);
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.04);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.08);
+    color: var(--text-main);
+  }
+
+  .footer {
+    margin-top: 26px;
+    font-size: 0.85rem;
+    opacity: 0.75;
+  }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 1.8rem; }
+    .glass { padding: 28px; }
+  }
+</style>
+</head>
+
+<body>
+  <main class="glass">
+    <h1>Genki Image Downloader</h1>
+
+    <p>
+      A calm, minimal tool inspired by Japanese design.
+      Download images from <strong>publicly accessible websites</strong>
+      in a clean and respectful way.
+    </p>
+
+    <p class="note">
+      Designed for designers, developers, and researchers.
+      No accounts. No noise. Just utility.
+    </p>
+
+    <div class="actions">
+      <a href="/app" class="btn btn-primary">Open the App</a>
+      <a href="/privacy" class="btn btn-secondary">Privacy</a>
+      <a href="/terms" class="btn btn-secondary">Terms</a>
+    </div>
+
+    <div class="footer">
+      © Genki — respect creators & website policies.
+    </div>
+  </main>
+</body>
+</html>
+"""
+
 
 @app.route("/status")
 def status():
