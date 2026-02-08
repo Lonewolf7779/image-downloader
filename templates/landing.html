@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Genki Image Downloader — Landing</title>
+    <meta name="description"
+        content="Genki is a tool to download publicly accessible images from webpages into a ZIP. Learn how it works and visit the app.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <header style="display:flex;align-items:center;gap:12px;padding:16px;">
+        <img src="{{ url_for('static', filename='logo.svg') }}" alt="Genki" style="height:36px;" />
+        <h1 style="font-size:1.25rem;margin:0">Genki Image Downloader</h1>
+    </header>
+
+    <main style="max-width:820px;margin:24px auto;padding:16px;">
+        <section>
+            <h2>What this tool does</h2>
+            <p>Genki helps you download images from publicly accessible webpages into a ZIP file for offline use and
+                review.</p>
+        </section>
+
+        <section>
+            <h2>How it works</h2>
+            <ul>
+                <li>Paste a URL of a publicly accessible webpage into the app.</li>
+                <li>The tool scans pages for publicly visible images and prepares a ZIP archive.</li>
+                <li>Only images you own or have permission to use should be downloaded.</li>
+            </ul>
+            <p><strong>Note:</strong> Genki does not access private, login-required, or protected content.</p>
+        </section>
+
+        <section>
+            <h2>When it may not work</h2>
+            <p>Some websites restrict automated access, use dynamic image loading, or block direct downloads. If a site
+                prevents access, Genki may not find or download images.</p>
+        </section>
+
+        <section>
+            <h2>Who it's for</h2>
+            <p>Designers, developers, researchers, and site owners who need to gather publicly available images they are
+                authorized to use.</p>
+        </section>
+
+        <div style="margin-top:20px;">
+            <a href="{{ url_for('index') }}" class="primary"
+                style="text-decoration:none;padding:10px 16px;background:#2b6cb0;color:#fff;border-radius:6px;">Open the
+                App</a>
+        </div>
+
+        <div style="margin-top:18px;">
+            <form action="{{ url_for('index') }}" method="POST" style="display:flex;gap:8px;align-items:center;">
+                <input name="url" placeholder="Paste website URL (https://example.com)" required
+                    style="flex:1;padding:8px;border:1px solid #ddd;border-radius:6px;" />
+                <button type="submit" class="primary" style="padding:8px 12px;background:#2b6cb0;color:#fff;border-radius:6px;border:none;">Start</button>
+            </form>
+        </div>
+
+        <!-- AdSense block: only present on the static landing page -->
+        <div class="ad-slot" style="margin:20px 0;">
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1328727126151207" crossorigin="anonymous"></script>
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1328727126151207" data-ad-slot="REPLACE" data-ad-format="auto" data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <hr style="margin:24px 0;" />
+
+        <footer style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="{{ url_for('privacy') }}">Privacy</a>
+            <a href="{{ url_for('terms') }}">Terms</a>
+            <a href="{{ url_for('contact') }}">Contact</a>
+        </footer>
+    </main>
+</body>
+
+</html>
