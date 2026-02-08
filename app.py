@@ -88,11 +88,27 @@ def index():
     return render_template("index.html")
 
 
+# @app.route("/", methods=["GET"])
+# def landing():
+#     # Serve the static, content-rich landing page so root loads the publisher content.
+#     return render_template("landing.html")
+
 @app.route("/", methods=["GET"])
 def landing():
-    # Serve the static, content-rich landing page so root loads the publisher content.
-    return render_template("landing.html")
-
+    return """
+    <html>
+      <head>
+        <title>Genki Image Downloader</title>
+        <meta name="robots" content="index,follow">
+      </head>
+      <body>
+        <h1>Genki Image Downloader</h1>
+        <p>Download images from publicly accessible websites.</p>
+        <p>This tool respects website policies and copyright.</p>
+        <a href="/app">Open the App</a>
+      </body>
+    </html>
+    """
 
 @app.route("/status")
 def status():
